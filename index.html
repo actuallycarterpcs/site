@@ -16,39 +16,30 @@
       views++;
       localStorage.setItem('views', views);
       viewCountElement.style.display = 'none';
+
       document.addEventListener('contextmenu', function(event) {
         event.preventDefault();
       });
+
       backgroundVideo.pause();
       typewriter.style.animationPlayState = 'paused';
       audio.loop = true;
+
       overlay.addEventListener('click', function() {
         overlay.classList.add('fade-out');
         backgroundVideo.play();
         typewriter.style.animationPlayState = 'running';
-        audio.play();
+        audio.play(); // Play audio only when overlay is clicked
         setTimeout(function() {
           overlay.style.display = 'none';
           viewCountElement.style.display = 'block';
           viewCountElement.textContent = `views: ${views}`;
         }, 1000);
       });
-      backgroundVideo.addEventListener('canplaythrough', function() {
-        if (audio.paused) {
-          audio.play();
-        }
-      });
+
       backgroundVideo.addEventListener('ended', function() {
         backgroundVideo.currentTime = 0;
-        audio.currentTime = 0;
         backgroundVideo.play();
-        audio.play();
-      });
-      audio.addEventListener('ended', function() {
-        audio.currentTime = 0;
-        backgroundVideo.currentTime = 0;
-        backgroundVideo.play();
-        audio.play();
       });
     };
   </script>
@@ -212,7 +203,7 @@
 <body>
 
   <div id="overlay">
-    <div id="enter-text">Click to enter...</div>
+    <div id="enter-text">...</div>
   </div>
 
   <video autoplay loop muted id="background-video">
